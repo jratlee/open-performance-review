@@ -75,9 +75,15 @@ consumes that engine rather than embedding comparison rules in the UI.
    attribution. Use `reviewed` only when the project can explain its coverage.
 6. Run the import screen locally and then the typecheck/build commands below.
 
-The browser import accepts JSON and a bounded CSV shape. It rejects oversized
-files, malformed records, non-public URL schemes/hosts, and arbitrary HTML or
-media content. Import is a preview only: the file is not uploaded or persisted.
+The browser import accepts JSON, a bounded CSV shape, and versioned Field Notes
+project packs. It rejects oversized files, malformed records, non-public URL
+schemes/hosts, and arbitrary HTML or media content. Import is a preview only:
+the file is not uploaded or persisted. A validated project can be downloaded
+as a complete JSON pack for local sharing and re-import.
+
+Project packs include the format version, project metadata, repeatable moments,
+records, observations, source URLs, creator/platform fields, provenance,
+attribution, and source-use notes. They never include or host source media.
 
 ## Source use and licensing
 
