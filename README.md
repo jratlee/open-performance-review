@@ -16,6 +16,12 @@ Download the runnable source from the public
 Copy the example project, replace the artist, show run, moments, and sources,
 and run the review locally. No account or database is required.
 
+Canonical project links:
+
+- [Source repository](https://github.com/jratlee/open-performance-review)
+- [Issues and import-format discussions](https://github.com/jratlee/open-performance-review/issues)
+- [MIT License](LICENSE)
+
 ## Quick start
 
 ```sh
@@ -77,9 +83,18 @@ media content. Import is a preview only: the file is not uploaded or persisted.
 
 Publicly reachable does not mean unowned. Link to records you have permission
 to reference, follow platform terms, credit creators, record repost lineage,
-respect takedowns, and add licence or attribution notes to the project. This
+respect takedowns, and add license or attribution notes to the project. This
 repository does not download or host source media and does not promise that a
 source will remain available.
+
+The application code in this repository is released under the
+[MIT License](LICENSE). Example records, creator names, platform metadata, and
+third-party source links are not automatically covered by that code license.
+Treat those materials according to their own rights and the source platform's
+terms. Community project packs should carry their own attribution and license
+notes.
+
+Copyright © 2026 [False Dawn Industries](https://falsedawn.industries).
 
 ## Evidence limits
 
