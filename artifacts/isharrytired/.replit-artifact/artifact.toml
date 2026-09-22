@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Is Harry Tired?"
+description = "A fan-powered comparison site for observable Harry Styles performance energy across Madison Square Garden shows, with source-linked Anchor Moment comparisons and editorial confidence labels."
+version = "1.0.0"
+id = "artifacts/isharrytired"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19708
+
+[services.development]
+run = "pnpm --filter @workspace/isharrytired run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/isharrytired", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/isharrytired/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19708"
+BASE_PATH = "/"

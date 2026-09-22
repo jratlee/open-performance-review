@@ -1,0 +1,53 @@
+{
+  "project": {
+    "slug": "sample-community-run",
+    "name": "Sample community run",
+    "artist": {
+      "slug": "sample-artist",
+      "name": "Sample Artist"
+    },
+    "runLabel": "Illustrative local project",
+    "description": "A tiny valid fixture for the Field Notes import format."
+  },
+  "moments": [
+    {
+      "slug": "opening-traverse",
+      "name": "Opening traverse",
+      "version": 1,
+      "focus": "movement",
+      "description": "The same opening section in each record.",
+      "segmentLabel": "Opening song · 00:20–00:50"
+    }
+  ],
+  "records": [
+    {
+      "slug": "2026-01-01-room-a",
+      "date": "2026-01-01",
+      "venue": "Room A",
+      "moments": [
+        {
+          "momentSlug": "opening-traverse",
+          "result": "in_line",
+          "observations": [
+            {
+              "signalType": "movement",
+              "label": "medium",
+              "note": "The performer crosses the same visible section of the stage."
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://example.com/public-record-1",
+              "platform": "Example archive",
+              "creator": "Community contributor",
+              "provenance": {
+                "relation": "original",
+                "note": "Fixture URL; replace before review."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+import { ArrowLeft, ArrowRight, ExternalLink, Filter, Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link, useParams } from 'wouter';
+import { getGetProjectQueryKey, getListProjectsQueryKey, getSearchSourceIndexQueryKey, useGetProject, useListProjects, useSearchSourceIndex } from '@workspace/api-client-react';
+import { ProjectCard, RecordCard } from '@/components/data-display';
+import { SiteShell } from '@/components/site-shell';
+import { formatDate } from '@/lib/format';
+import { trackEvent } from '@/lib/analytics';
+
+function SourceSearch() {
+  const [query, setQuery] = useState('');
+  const trimmed = query.trim();
+  const searchParams = { q: trimmed || '  ', limit: 8 };
+  const result = useSearchSourceIndex(searchParams, { query: { enabled: trimmed.length >= 2, queryKey: getSearchSourceIndexQueryKey(searchParams) } });
+  return <section className="source-search-box" aria-labelledby="source-search-heading"><div><span className="eyebrow">bounded source index</span><h2 id="source-search-heading">Find a public record.</h2><p>Search the small curated index only. The app never fetches arbitrary URLs or hosts media.</p></div><label><span className="search-label">Search creator, platform, venue, or date</span><span className="search-input-row"><Search size={16} aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try YouTube or MSG" data-testid="input-search-sources" /></span></label>{trimmed.length >= 2 && <div className="source-search-results" aria-live="polite">{result.isLoading ? <p className="search-status">Searching the bounded index…</p> : result.isError ? <p className="search-status">The index could not be searched. Try again later.</p> : result.data?.results.length ? result.data.results.map((item) => <a key={item.id} href={item.url} target="_blank" rel="noreferrer noopener" className="source-search-result"><span><strong>{item.title}</strong><small>{item.platform} · {item.creator ?? 'creator not listed'} · {item.provenanceStatus}</small></span><ExternalLink size={14} /></a>) : <p className="search-status">No bounded matches for that search.</p>}</div>}</section>;
+}
+
+export default function Shows() {
+  const params = useParams<{ projectSlug?: string }>();
+  const projectSlug = params.projectSlug;
+  const projectsQuery = useListProjects({ query: { enabled: !projectSlug, queryKey: getListProjectsQueryKey() } });
+  const projectQuery = useGetProject(projectSlug ?? '', { query: { enabled: Boolean(projectSlug), queryKey: getGetProjectQueryKey(projectSlug ?? '') } });
+  const project = projectSlug ? projectQuery.data : undefined;
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('all');
+  const records = useMemo(() => (project?.records ?? []).filter((record) => `${record.venue} ${record.date}`.toLowerCase().includes(search.toLowerCase())).filter((record) => filter === 'all' || record.result === filter), [project?.records, search, filter]);
+
+  if (!projectSlug) {
+    if (projectsQuery.isLoading) return <SiteShell><div className="page-wrap page-loading"><div className="skeleton h-14 w-1/2" /><div className="mt-12 grid gap-5 md:grid-cols-2" /></div></SiteShell>;
+    if (projectsQuery.isError) return <SiteShell><div className="empty-page"><span className="eyebrow">Projects unavailable</span><h1>The example index is out of reach.</h1><button type="button" onClick={() => projectsQuery.refetch()} className="button-dark">Retry the index</button></div></SiteShell>;
+    return <SiteShell><section className="page-wrap archive-page"><div className="archive-page-heading"><div><span className="eyebrow">available projects / {projectsQuery.data?.length ?? 0}</span><h1>Projects.</h1><p>Each project defines its artist, show run, repeatable moments, sources, provenance, and evidence limits.</p></div><Link href="/import" className="button-dark">Import records <ArrowRight size={15} /></Link></div><div className="show-grid">{(projectsQuery.data ?? []).map((item, index) => <div key={item.slug} className={`animate-rise delay-${Math.min(index + 1, 4)}`}><ProjectCard project={item} featured={index === 0} /></div>)}</div><SourceSearch /></section></SiteShell>;
+  }
+
+  if (projectQuery.isLoading) return <SiteShell><div className="page-wrap page-loading"><div className="skeleton h-8 w-40" /><div className="skeleton mt-8 h-24 w-3/4" /><div className="skeleton mt-12 h-64" /></div></SiteShell>;
+  if (projectQuery.isError || !project) return <SiteShell><div className="empty-page"><span className="eyebrow">No project found</span><h1>That project is not in the local index.</h1><Link href="/projects" className="button-dark"><ArrowLeft size={15} /> Back to projects</Link></div></SiteShell>;
+  return <SiteShell><section className="page-wrap archive-page"><Link href="/projects" className="back-link"><ArrowLeft size={14} /> All projects</Link><div className="archive-page-heading project-page-heading"><div><span className="eyebrow">{project.status} project / {project.artist.name}</span><h1>{project.name}.</h1><p>{project.description}</p><div className="project-meta-line">{project.runLabel} · {project.moments.length} repeatable moments · {project.sourceCount} linked source records</div></div><Link href="/import" className="button-dark">Import another file <ArrowRight size={15} /></Link></div><div className="project-notice"><Filter size={17} /><p><strong>Example boundary.</strong> This is illustrative data for demonstrating the review workflow, not a live report. Source links and creator metadata remain visible so contributors can replace it with reviewed records.</p></div><div className="filter-row"><Filter size={15} />{['all', 'higher', 'in_line', 'lower', 'no_reliable_read'].map((item) => <button type="button" key={item} onClick={() => { setFilter(item); trackEvent('record_filter_changed', { filter: item }); }} aria-pressed={filter === item} className={`filter-button ${filter === item ? 'filter-button-active' : ''}`}>{item === 'in_line' ? 'About the same' : item === 'no_reliable_read' ? 'Not enough to tell' : item === 'all' ? 'All records' : item}</button>)}</div>{records.length ? <div className="show-grid">{records.map((record, index) => <div key={record.slug} className={`animate-rise delay-${Math.min(index + 1, 4)}`}><RecordCard projectSlug={project.slug} record={record} featured={index === 0} /></div>)}</div> : <div className="empty-state"><div className="font-display text-3xl italic">No records match that read.</div><p>Try a different date, venue, or result.</p><button type="button" onClick={() => { setSearch(''); setFilter('all'); }} className="text-link">Clear filters <ArrowRight size={14} /></button></div>}<div className="archive-inline-search"><label><span className="search-label">Filter this project</span><span className="search-input-row"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Find a venue or date" /></span></label></div><div className="moment-grid">{project.moments.map((moment, index) => <div key={moment.slug} className="animate-rise"><Link href={`/projects/${project.slug}/moments/${moment.slug}/comparison`} className="moment-index-link"><span>0{index + 1}</span>{moment.name}<ArrowRight size={14} /></Link></div>)}</div><div className="source-policy-note"><span className="eyebrow">source-use note</span><p>{project.sourcePolicy}</p></div></section></SiteShell>;
+}

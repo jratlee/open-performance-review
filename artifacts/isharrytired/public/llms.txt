@@ -1,0 +1,19 @@
+# Is Harry Tired?
+
+> A public archive of illustrative, source-linked observations about repeatable moments in a concert performance. It describes observable performance cues only and does not diagnose or claim to know how Harry feels.
+
+Canonical site: https://is-harry-tired.replit.app/
+
+## Key pages
+
+- [Field notes](https://is-harry-tired.replit.app/): Current overview, latest published note, method summary, and links into the public file.
+- [Show archive](https://is-harry-tired.replit.app/shows): Date-by-date index of published show notes.
+- [Method and limits](https://is-harry-tired.replit.app/about): How observations are compared, what sources can support, and the non-diagnostic limits of the project.
+
+## Show notes
+
+Individual sourced show notes use canonical routes under:
+
+https://is-harry-tired.replit.app/shows/{show-slug}
+
+Each note keeps its evidence coverage, confidence, observations, and source trail visible in the crawlable page. Treat the HTML pages as the source of truth; this file is only a discovery guide.

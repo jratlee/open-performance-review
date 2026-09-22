@@ -1,0 +1,17 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "-fz_QQuQxM25ouEJuZlrg"
+uri = "file://.local/conversation-workspace/files/isharrytired-prd.md"
+type = "text"
+title = "isharrytired.com Product Requirements Document"
+description = "A build-ready PRD for the curated performance-energy comparison MVP, including scope, user stories, measurement rules, risks, roadmap, and validation plan."
+logical_id = "0654c7e7-4c59-46b9-a11d-42376a9ccf2d"
+content_hash = "sha256:8b437f90bc127bb28e199f830939476c25c482c32bfc3ffccf588244ee6f4278"
+size = 24551
+mtime_ms = 1789652633790
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/conversation:870e5630-d91c-49b8-8bfb-43a300b04283/0654c7e7-4c59-46b9-a11d-42376a9ccf2d/1839eb90-821b-44ea-bcc2-576c95f54db5"
+storage_version_token = "1789652638992857"
+content_type = "text/markdown"
+source_uri = "file://isharrytired-prd.md"

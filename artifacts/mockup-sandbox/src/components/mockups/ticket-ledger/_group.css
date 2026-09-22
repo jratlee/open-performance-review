@@ -1,0 +1,615 @@
+@keyframes tn-rise {
+  from { opacity: 0; transform: translateY(18px) rotate(.4deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes tn-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-16px); }
+}
+
+.ticket-notebook {
+  --tn-ink: #15242c;
+  --tn-paper: #f0e9dc;
+  --tn-paper-deep: #e0d4c1;
+  --tn-coral: #ef493b;
+  --tn-coral-deep: #c9332f;
+  --tn-blue: #2347df;
+  --tn-yellow: #e9ca59;
+  --tn-aqua: #91c5b1;
+  --tn-muted: #756f64;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 11% 17%, rgba(239, 73, 59, .08), transparent 20rem),
+    radial-gradient(circle at 87% 60%, rgba(35, 71, 223, .055), transparent 24rem),
+    var(--tn-paper);
+  color: var(--tn-ink);
+  font-family: "Avenir Next", "Trebuchet MS", ui-sans-serif, sans-serif;
+  line-height: 1.4;
+}
+
+.ticket-notebook *,
+.ticket-notebook *::before,
+.ticket-notebook *::after { box-sizing: border-box; }
+
+.ticket-notebook a,
+.ticket-notebook button { -webkit-tap-highlight-color: transparent; }
+
+.ticket-notebook a:focus-visible,
+.ticket-notebook button:focus-visible {
+  outline: 3px solid var(--tn-blue);
+  outline-offset: 4px;
+}
+
+.ticket-notebook button {
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.tn-header {
+  align-items: center;
+  border-bottom: 1px solid rgba(21, 36, 44, .18);
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 78px;
+  padding: 0 48px;
+}
+
+.tn-brand {
+  align-items: center;
+  color: var(--tn-ink);
+  display: inline-flex;
+  gap: 11px;
+  text-decoration: none;
+}
+
+.tn-brand-mark {
+  align-items: center;
+  background: var(--tn-ink);
+  border-radius: 50%;
+  color: var(--tn-yellow);
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  transform: rotate(-9deg);
+  width: 34px;
+}
+
+.tn-brand strong,
+.tn-brand small { display: block; }
+
+.tn-brand strong {
+  font-family: "Iowan Old Style", Baskerville, Georgia, serif;
+  font-size: 20px;
+  font-style: italic;
+  letter-spacing: -.035em;
+  line-height: .95;
+}
+
+.tn-brand small,
+.tn-nav a,
+.tn-kicker,
+.tn-overline,
+.tn-ticket-label,
+.tn-ticket-code,
+.tn-ticket-small,
+.tn-ticket-serial,
+.tn-stage-caption,
+.tn-signal-label,
+.tn-signal-confidence,
+.tn-anchor-marker,
+.tn-lock,
+.tn-anchor-read span,
+.tn-archive-meta,
+.tn-archive-strip-label,
+.tn-archive-night,
+.tn-archive-date,
+.tn-archive-read,
+.tn-method-step > span,
+.tn-footer,
+.tn-disclosure {
+  font-family: "SFMono-Regular", "Cascadia Code", "Roboto Mono", ui-monospace, monospace;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.tn-brand small {
+  color: var(--tn-muted);
+  font-size: 8px;
+  letter-spacing: .15em;
+  margin-top: 5px;
+}
+
+.tn-nav { align-items: center; display: flex; gap: 32px; }
+.tn-nav a,
+.tn-footer a {
+  color: var(--tn-ink);
+  font-size: 10px;
+  text-decoration: none;
+  transition: color .2s ease, transform .2s ease;
+}
+.tn-nav a:hover,
+.tn-footer a:hover { color: var(--tn-coral-deep); }
+.tn-nav a::after {
+  background: var(--tn-coral);
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 5px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+.tn-nav a:hover::after { transform: scaleX(1); }
+.tn-menu-button { background: transparent; display: none; padding: 8px; }
+
+.tn-mobile-nav {
+  background: var(--tn-ink);
+  color: var(--tn-paper);
+  display: none;
+  padding: 8px 22px 16px;
+}
+.tn-mobile-nav a {
+  align-items: center;
+  border-bottom: 1px solid rgba(240, 233, 220, .2);
+  color: var(--tn-paper);
+  display: flex;
+  font-size: 11px;
+  justify-content: space-between;
+  letter-spacing: .12em;
+  padding: 14px 0;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.tn-disclosure {
+  align-items: center;
+  background: var(--tn-yellow);
+  color: var(--tn-ink);
+  display: flex;
+  font-size: 9px;
+  gap: 9px;
+  justify-content: center;
+  min-height: 31px;
+  padding: 6px 18px;
+  text-align: center;
+}
+.tn-disclosure-dot { background: var(--tn-ink); border-radius: 50%; height: 3px; width: 3px; }
+
+.tn-hero {
+  display: grid;
+  gap: 66px;
+  grid-template-columns: minmax(320px, .85fr) minmax(520px, 1.15fr);
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 650px;
+  padding: 82px 48px 106px;
+}
+
+.tn-hero-intro { align-self: center; position: relative; z-index: 2; }
+.tn-kicker {
+  align-items: center;
+  color: var(--tn-coral-deep);
+  display: flex;
+  font-size: 10px;
+  gap: 9px;
+}
+.tn-live-dot {
+  background: var(--tn-coral);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(239, 73, 59, .15);
+  display: inline-block;
+  height: 7px;
+  width: 7px;
+}
+.tn-side-note {
+  color: var(--tn-muted);
+  font-family: "Iowan Old Style", Baskerville, Georgia, serif;
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 28px 0 0;
+  max-width: 215px;
+}
+.tn-hero h1,
+.tn-section-heading h2,
+.tn-anchors-header h2,
+.tn-archive-heading h2,
+.tn-method-copy h2,
+.tn-close h2 {
+  font-family: "Iowan Old Style", Baskerville, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -.065em;
+  line-height: .86;
+  margin: 0;
+}
+.tn-hero h1 {
+  font-size: clamp(68px, 7vw, 121px);
+  margin: 24px 0 25px -5px;
+}
+.tn-hero h1 em,
+.tn-section-heading h2 em,
+.tn-anchors-header h2 em,
+.tn-archive-heading h2 em,
+.tn-method-copy h2 em,
+.tn-close h2 em { color: var(--tn-coral-deep); font-weight: 400; }
+.tn-hero-copy {
+  color: #4e514e;
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 390px;
+}
+.tn-hero-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 22px; margin-top: 34px; }
+.tn-button {
+  align-items: center;
+  display: inline-flex;
+  font-size: 10px;
+  gap: 12px;
+  letter-spacing: .1em;
+  padding: 14px 17px;
+  text-transform: uppercase;
+  transition: transform .2s ease, background-color .2s ease;
+}
+.tn-button:hover { transform: translateY(-2px); }
+.tn-button-dark { background: var(--tn-ink); color: var(--tn-paper); }
+.tn-button-dark:hover { background: var(--tn-coral-deep); }
+.tn-text-button {
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid var(--tn-ink);
+  display: inline-flex;
+  font-size: 10px;
+  gap: 7px;
+  letter-spacing: .09em;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.tn-ticket-stage {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  position: relative;
+}
+.tn-ticket-shadow {
+  background: var(--tn-coral);
+  bottom: 38px;
+  height: 91%;
+  left: 6%;
+  max-width: 605px;
+  position: absolute;
+  right: 1%;
+  transform: rotate(3.7deg);
+}
+.tn-ticket {
+  background:
+    linear-gradient(105deg, rgba(21, 36, 44, .045) 0 1px, transparent 1px 8px),
+    var(--tn-paper-deep);
+  box-shadow: 13px 15px 0 rgba(21, 36, 44, .13);
+  display: grid;
+  grid-template-columns: 1fr 155px;
+  max-width: 650px;
+  min-height: 485px;
+  padding: 28px 0 0 31px;
+  position: relative;
+  transform: rotate(-2.1deg);
+  width: 100%;
+}
+.tn-ticket::before,
+.tn-ticket::after {
+  border: 1px dashed rgba(21, 36, 44, .2);
+  bottom: 13px;
+  content: "";
+  left: 13px;
+  pointer-events: none;
+  position: absolute;
+  right: 13px;
+  top: 13px;
+}
+.tn-ticket::after {
+  border: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 19px, rgba(21, 36, 44, .03) 20px);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.tn-ticket > * { position: relative; z-index: 1; }
+.tn-ticket-topline {
+  align-items: center;
+  border-bottom: 1px solid rgba(21, 36, 44, .26);
+  color: #5e5a51;
+  display: flex;
+  font-size: 9px;
+  grid-column: 1 / 2;
+  justify-content: space-between;
+  letter-spacing: .15em;
+  padding: 0 26px 12px 0;
+  text-transform: uppercase;
+}
+.tn-ticket-code { color: var(--tn-coral-deep); font-size: 9px; }
+.tn-ticket-main { display: flex; gap: 26px; grid-column: 1 / 2; padding: 25px 25px 19px 0; }
+.tn-ticket-night { display: flex; flex-direction: column; }
+.tn-ticket-label {
+  color: #675f51;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+.tn-ticket-night strong {
+  color: var(--tn-coral-deep);
+  font-family: "Iowan Old Style", Baskerville, Georgia, serif;
+  font-size: clamp(78px, 9vw, 124px);
+  font-weight: 400;
+  letter-spacing: -.1em;
+  line-height: .75;
+  margin-left: -7px;
+  margin-top: 17px;
+}
+.tn-ticket-date { border-left: 1px solid rgba(21, 36, 44, .25); display: flex; flex-direction: column; justify-content: flex-end; padding-left: 20px; }
+.tn-ticket-date span { color: #625b50; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.tn-ticket-date strong { font-size: 26px; font-weight: 700; letter-spacing: .02em; line-height: 1.1; margin-top: 8px; white-space: nowrap; }
+.tn-ticket-date strong span { color: var(--tn-coral-deep); font-size: 17px; }
+.tn-ticket-rule { background: var(--tn-ink); height: 4px; grid-column: 1 / 2; margin: 0 25px 0 0; }
+.tn-ticket-venue { display: flex; flex-direction: column; gap: 5px; grid-column: 1 / 2; padding: 23px 20px 19px 0; }
+.tn-ticket-venue strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 37px; font-weight: 400; letter-spacing: -.045em; line-height: .92; }
+.tn-ticket-city { align-items: center; color: var(--tn-coral-deep); display: flex; font-size: 10px; font-weight: 700; gap: 5px; letter-spacing: .13em; margin-top: 5px; text-transform: uppercase; }
+.tn-ticket-grid { border-top: 1px solid rgba(21, 36, 44, .22); display: grid; gap: 20px; grid-column: 1 / 2; grid-template-columns: 1.4fr 1fr; margin-right: 25px; padding: 17px 0; }
+.tn-ticket-grid > div { display: flex; flex-direction: column; gap: 5px; }
+.tn-ticket-grid > div + div { border-left: 1px solid rgba(21, 36, 44, .22); padding-left: 20px; }
+.tn-ticket-grid strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 25px; font-weight: 400; letter-spacing: -.03em; }
+.tn-ticket-small { color: #6b655b; font-size: 8px; letter-spacing: .08em; }
+.tn-ticket-bottom { align-items: end; display: flex; grid-column: 1 / 2; justify-content: space-between; margin: 0 25px 20px 0; }
+.tn-ticket-barcode { align-items: stretch; display: flex; gap: 2px; height: 39px; }
+.tn-ticket-barcode i { background: var(--tn-ink); display: block; height: 100%; width: 2px; }
+.tn-ticket-barcode i:nth-child(2n) { width: 5px; }
+.tn-ticket-barcode i:nth-child(4n) { width: 1px; }
+.tn-ticket-serial { color: #625e55; font-size: 8px; letter-spacing: .08em; }
+.tn-ticket-stub {
+  align-items: center;
+  background: var(--tn-coral);
+  border-left: 1px dashed rgba(21, 36, 44, .45);
+  color: var(--tn-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  grid-column: 2;
+  grid-row: 1 / 6;
+  justify-content: center;
+  margin: -1px 0 0;
+  padding: 28px 18px;
+  text-align: center;
+}
+.tn-ticket-stub::before,
+.tn-ticket-stub::after {
+  background: var(--tn-paper);
+  border-radius: 50%;
+  content: "";
+  height: 22px;
+  left: -11px;
+  position: absolute;
+  width: 22px;
+}
+.tn-ticket-stub::before { top: -11px; }
+.tn-ticket-stub::after { bottom: -11px; }
+.tn-vertical-label { font-size: 8px; letter-spacing: .18em; writing-mode: vertical-rl; }
+.tn-ticket-stub > div:nth-child(2) { display: flex; flex-direction: column; gap: 10px; }
+.tn-ticket-stub strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 31px; font-style: italic; letter-spacing: -.04em; line-height: .88; }
+.tn-stage-caption {
+  bottom: -33px;
+  color: var(--tn-muted);
+  font-size: 8px;
+  left: 12%;
+  position: absolute;
+}
+
+.tn-signal-band {
+  align-items: center;
+  background: var(--tn-ink);
+  color: var(--tn-paper);
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr 1.05fr 1.5fr .6fr;
+  padding: 25px max(48px, calc((100% - 1344px) / 2));
+}
+.tn-signal-label { align-items: center; color: var(--tn-aqua); display: flex; font-size: 9px; gap: 9px; }
+.tn-signal-result { align-items: center; color: var(--tn-coral); display: flex; font-size: 25px; gap: 11px; letter-spacing: -.03em; }
+.tn-signal-result strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-weight: 400; }
+.tn-signal-description { color: rgba(240, 233, 220, .67); font-size: 13px; line-height: 1.5; max-width: 340px; }
+.tn-signal-confidence { border-left: 1px solid rgba(240, 233, 220, .22); display: flex; flex-direction: column; gap: 3px; padding-left: 25px; }
+.tn-signal-confidence span { color: rgba(240, 233, 220, .6); font-size: 8px; }
+.tn-signal-confidence strong { color: var(--tn-yellow); font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 24px; font-weight: 400; letter-spacing: -.03em; text-transform: none; }
+
+.tn-entry-details,
+.tn-archive-section {
+  margin: 0 auto;
+  max-width: 1344px;
+  padding: 111px 48px;
+}
+.tn-entry-details { display: grid; gap: 100px; grid-template-columns: minmax(250px, .9fr) 1.1fr; }
+.tn-overline { color: var(--tn-coral-deep); display: inline-block; font-size: 9px; letter-spacing: .15em; }
+.tn-overline-light { color: var(--tn-yellow); }
+.tn-section-heading h2,
+.tn-anchors-header h2,
+.tn-archive-heading h2,
+.tn-method-copy h2 { font-size: clamp(53px, 5.1vw, 82px); margin-top: 19px; }
+.tn-section-heading > p { color: #5e5c55; font-size: 15px; line-height: 1.65; margin: 29px 0 0; max-width: 350px; }
+.tn-details-list { border-top: 1px solid rgba(21, 36, 44, .24); }
+.tn-detail-row { align-items: center; border-bottom: 1px solid rgba(21, 36, 44, .24); display: grid; gap: 20px; grid-template-columns: 28px 1fr; padding: 22px 0; }
+.tn-detail-row > svg { color: var(--tn-coral-deep); }
+.tn-detail-row div { align-items: baseline; display: flex; gap: 24px; justify-content: space-between; }
+.tn-detail-row span { color: var(--tn-muted); font-family: "SFMono-Regular", ui-monospace, monospace; font-size: 9px; letter-spacing: .11em; text-transform: uppercase; }
+.tn-detail-row strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 19px; font-weight: 400; letter-spacing: -.02em; text-align: right; }
+
+.tn-anchors-section { background: var(--tn-blue); color: var(--tn-paper); padding: 105px max(48px, calc((100% - 1344px) / 2)); }
+.tn-anchors-header { align-items: end; display: flex; gap: 40px; justify-content: space-between; }
+.tn-anchors-header h2 { color: var(--tn-paper); }
+.tn-anchors-header h2 em { color: var(--tn-yellow); }
+.tn-anchors-header > p { color: rgba(240, 233, 220, .75); font-size: 14px; line-height: 1.65; margin: 0 0 3px; max-width: 350px; }
+.tn-anchor-grid { display: grid; gap: 21px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 63px; }
+.tn-anchor-card { background: var(--tn-paper); color: var(--tn-ink); min-height: 375px; padding: 26px 29px 23px; position: relative; transition: transform .25s ease, box-shadow .25s ease; }
+.tn-anchor-card:first-child { transform: rotate(-.65deg); }
+.tn-anchor-card:last-child { background: var(--tn-yellow); transform: rotate(.65deg); }
+.tn-anchor-card:hover { box-shadow: 8px 9px 0 rgba(21, 36, 44, .27); transform: translateY(-5px) rotate(0); }
+.tn-anchor-card-top { align-items: center; display: flex; justify-content: space-between; }
+.tn-anchor-number { color: var(--tn-coral-deep); font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 53px; letter-spacing: -.08em; line-height: .8; }
+.tn-lock { align-items: center; color: #645e52; display: inline-flex; font-size: 8px; gap: 6px; }
+.tn-anchor-marker { color: var(--tn-coral-deep); display: block; font-size: 8px; margin-top: 39px; }
+.tn-anchor-card h3 { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 39px; font-weight: 400; letter-spacing: -.06em; line-height: .95; margin: 9px 0 0; }
+.tn-anchor-prompt { color: #5c5a51; font-size: 12px; margin: 12px 0 0; }
+.tn-anchor-read { border-top: 1px solid rgba(21, 36, 44, .25); display: flex; flex-direction: column; gap: 5px; margin-top: 20px; padding-top: 14px; }
+.tn-anchor-read span { color: var(--tn-muted); font-size: 8px; }
+.tn-anchor-read strong { color: var(--tn-coral-deep); font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 18px; font-weight: 400; }
+.tn-anchor-detail { color: #5c5a51; font-size: 12px; line-height: 1.45; margin: 11px 0 0; max-width: 430px; }
+.tn-anchor-link { align-items: center; background: transparent; border-bottom: 1px solid var(--tn-ink); display: inline-flex; font-size: 9px; gap: 7px; letter-spacing: .11em; margin-top: 19px; padding: 2px 0; text-transform: uppercase; }
+
+.tn-archive-section { padding-bottom: 111px; padding-top: 111px; }
+.tn-archive-heading { align-items: end; display: flex; justify-content: space-between; }
+.tn-archive-meta { color: var(--tn-muted); display: flex; flex-direction: column; font-size: 8px; gap: 10px; }
+.tn-archive-meta span { align-items: center; display: flex; gap: 7px; }
+.tn-archive-meta svg { color: var(--tn-coral-deep); }
+.tn-archive-strip { border-bottom: 1px solid rgba(21, 36, 44, .26); border-top: 1px solid rgba(21, 36, 44, .26); display: grid; grid-template-columns: 135px 1fr; margin-top: 55px; }
+.tn-archive-strip-label { border-right: 1px solid rgba(21, 36, 44, .26); color: var(--tn-coral-deep); font-size: 9px; line-height: 1.5; padding: 26px 18px 24px 0; }
+.tn-archive-row { align-items: center; border-bottom: 1px solid rgba(21, 36, 44, .17); display: grid; gap: 17px; grid-template-columns: 45px 65px minmax(100px, 1fr) 65px 20px; padding: 19px 0 19px 26px; }
+.tn-archive-row:last-child { border-bottom: 0; }
+.tn-archive-row > svg { color: var(--tn-coral-deep); }
+.tn-archive-night { color: var(--tn-coral-deep); font-size: 10px; }
+.tn-archive-date,
+.tn-archive-place,
+.tn-archive-read { color: var(--tn-muted); font-size: 9px; letter-spacing: .08em; }
+.tn-archive-place { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 18px; letter-spacing: 0; text-transform: none; }
+.tn-read-up { color: var(--tn-blue); }
+.tn-read-down { color: var(--tn-coral-deep); }
+.tn-archive-toggle { align-items: center; background: transparent; border-bottom: 1px solid var(--tn-ink); display: flex; font-size: 10px; gap: 8px; letter-spacing: .12em; margin: 29px auto 0; padding: 5px 0; text-transform: uppercase; }
+.tn-archive-toggle svg { transition: transform .2s ease; }
+.tn-archive-toggle .tn-chevron-up { transform: rotate(180deg); }
+.tn-archive-note { align-items: center; background: var(--tn-yellow); display: flex; gap: 28px; margin-top: 20px; padding: 18px 22px; }
+.tn-archive-stamp { border: 1px solid var(--tn-ink); font-family: "SFMono-Regular", ui-monospace, monospace; font-size: 9px; padding: 7px; white-space: nowrap; }
+.tn-archive-note p { font-size: 13px; margin: 0; max-width: 570px; }
+.tn-archive-note a { align-items: center; color: var(--tn-ink); display: inline-flex; font-size: 10px; gap: 6px; margin-left: auto; text-transform: uppercase; white-space: nowrap; }
+
+.tn-method-section { background: var(--tn-ink); color: var(--tn-paper); display: grid; gap: 70px; grid-template-columns: 70px 1fr 1.1fr; padding: 95px max(48px, calc((100% - 1344px) / 2)); }
+.tn-method-marker { color: var(--tn-coral); font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 77px; letter-spacing: -.1em; line-height: .7; }
+.tn-method-copy h2 { color: var(--tn-paper); }
+.tn-method-copy h2 em { color: var(--tn-yellow); }
+.tn-method-steps { align-self: end; border-top: 1px solid rgba(240, 233, 220, .25); }
+.tn-method-step { border-bottom: 1px solid rgba(240, 233, 220, .25); display: grid; gap: 23px; grid-template-columns: 30px 1fr; padding: 18px 0; }
+.tn-method-step > span { color: var(--tn-coral); font-size: 9px; padding-top: 3px; }
+.tn-method-step strong { font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 21px; font-weight: 400; }
+.tn-method-step p { color: rgba(240, 233, 220, .64); font-size: 13px; margin: 3px 0 0; }
+
+.tn-close { align-items: center; display: flex; flex-direction: column; padding: 118px 24px 123px; text-align: center; }
+.tn-close-ticket { align-items: center; color: var(--tn-coral-deep); display: flex; flex-direction: column; font-family: "SFMono-Regular", ui-monospace, monospace; font-size: 8px; gap: 13px; letter-spacing: .17em; }
+.tn-close h2 { font-size: clamp(63px, 7vw, 108px); margin-top: 29px; }
+.tn-close h2 em { color: var(--tn-blue); }
+.tn-close p { color: var(--tn-muted); font-size: 15px; margin: 27px 0 25px; }
+.tn-copy-button { align-items: center; background: transparent; border-bottom: 1px solid var(--tn-ink); display: inline-flex; font-size: 10px; gap: 8px; letter-spacing: .1em; padding: 5px 0; text-transform: uppercase; }
+.tn-copy-button svg { color: var(--tn-coral-deep); }
+
+.tn-footer { align-items: center; background: var(--tn-yellow); display: grid; gap: 28px; grid-template-columns: 1fr 1.35fr auto auto; padding: 23px max(48px, calc((100% - 1344px) / 2)); }
+.tn-footer-brand strong { display: block; font-family: "Iowan Old Style", Baskerville, Georgia, serif; font-size: 19px; font-style: italic; letter-spacing: -.03em; text-transform: none; }
+.tn-footer-brand span { color: rgba(21, 36, 44, .65); display: block; font-size: 8px; letter-spacing: .1em; margin-top: 4px; }
+.tn-footer p { color: rgba(21, 36, 44, .68); font-size: 9px; letter-spacing: .05em; line-height: 1.45; margin: 0; max-width: 330px; text-transform: none; }
+.tn-footer a { align-items: center; display: inline-flex; gap: 5px; white-space: nowrap; }
+.tn-footer-source { color: var(--tn-coral-deep) !important; }
+
+@media (max-width: 1020px) {
+  .tn-header { padding: 0 27px; }
+  .tn-hero { gap: 27px; grid-template-columns: minmax(260px, .75fr) minmax(440px, 1.25fr); padding-left: 27px; padding-right: 27px; }
+  .tn-ticket { grid-template-columns: 1fr 125px; }
+  .tn-ticket-venue strong { font-size: 31px; }
+  .tn-signal-band { grid-template-columns: 1fr 1.1fr 1.2fr .6fr; padding-left: 27px; padding-right: 27px; }
+  .tn-entry-details, .tn-archive-section { padding-left: 27px; padding-right: 27px; }
+  .tn-anchors-section, .tn-method-section, .tn-footer { padding-left: 27px; padding-right: 27px; }
+  .tn-method-section { gap: 34px; }
+  .tn-footer { grid-template-columns: 1fr 1.2fr; }
+  .tn-footer a { justify-self: start; }
+}
+
+@media (max-width: 760px) {
+  .tn-header { min-height: 65px; padding: 0 19px; }
+  .tn-brand strong { font-size: 18px; }
+  .tn-nav { display: none; }
+  .tn-menu-button { align-items: center; display: inline-flex; justify-content: center; }
+  .tn-mobile-nav { display: block; }
+  .tn-disclosure { align-items: flex-start; flex-wrap: wrap; font-size: 8px; gap: 6px 8px; justify-content: center; line-height: 1.3; min-height: 35px; }
+  .tn-disclosure-dot { display: none; }
+  .tn-hero { display: flex; flex-direction: column; gap: 53px; min-height: 0; padding: 56px 19px 82px; }
+  .tn-hero h1 { font-size: clamp(64px, 18vw, 89px); margin-top: 21px; }
+  .tn-hero-copy { font-size: 14px; max-width: 320px; }
+  .tn-hero-actions { align-items: flex-start; flex-direction: column; gap: 17px; margin-top: 27px; }
+  .tn-ticket-stage { margin: 0 4px; }
+  .tn-ticket { grid-template-columns: 1fr 97px; min-height: 408px; padding: 23px 0 0 22px; }
+  .tn-ticket-topline { font-size: 7px; padding-right: 17px; }
+  .tn-ticket-code { font-size: 7px; }
+  .tn-ticket-main { gap: 17px; padding: 21px 16px 16px 0; }
+  .tn-ticket-night strong { font-size: clamp(72px, 20vw, 96px); margin-top: 14px; }
+  .tn-ticket-date { padding-left: 13px; }
+  .tn-ticket-date span { font-size: 8px; }
+  .tn-ticket-date strong { font-size: 19px; }
+  .tn-ticket-date strong span { font-size: 12px; }
+  .tn-ticket-rule { height: 3px; margin-right: 17px; }
+  .tn-ticket-venue { padding: 18px 12px 16px 0; }
+  .tn-ticket-label { font-size: 7px; }
+  .tn-ticket-venue strong { font-size: 25px; }
+  .tn-ticket-city { font-size: 8px; }
+  .tn-ticket-grid { gap: 10px; margin-right: 17px; padding: 13px 0; }
+  .tn-ticket-grid > div + div { padding-left: 11px; }
+  .tn-ticket-grid strong { font-size: 19px; }
+  .tn-ticket-small { font-size: 6px; }
+  .tn-ticket-bottom { margin-right: 17px; }
+  .tn-ticket-barcode { height: 29px; }
+  .tn-ticket-serial { font-size: 6px; }
+  .tn-ticket-stub { gap: 14px; padding: 20px 10px; }
+  .tn-vertical-label { font-size: 7px; }
+  .tn-ticket-stub strong { font-size: 23px; }
+  .tn-stage-caption { bottom: -28px; font-size: 7px; left: 3%; }
+  .tn-signal-band { align-items: start; gap: 15px 10px; grid-template-columns: 1fr 1fr; padding: 22px 19px 26px; }
+  .tn-signal-label { grid-column: 1 / -1; }
+  .tn-signal-result { font-size: 21px; }
+  .tn-signal-description { font-size: 12px; grid-column: 1 / -1; max-width: none; }
+  .tn-signal-confidence { border-left: 0; border-top: 1px solid rgba(240, 233, 220, .22); grid-column: 1 / -1; padding: 13px 0 0; }
+  .tn-entry-details, .tn-archive-section { display: block; padding: 79px 19px; }
+  .tn-section-heading h2, .tn-anchors-header h2, .tn-archive-heading h2, .tn-method-copy h2 { font-size: clamp(54px, 16vw, 73px); }
+  .tn-section-heading > p { font-size: 14px; }
+  .tn-details-list { margin-top: 48px; }
+  .tn-detail-row { align-items: start; gap: 12px; grid-template-columns: 23px 1fr; padding: 17px 0; }
+  .tn-detail-row div { align-items: start; flex-direction: column; gap: 6px; }
+  .tn-detail-row strong { font-size: 17px; text-align: left; }
+  .tn-anchors-section { padding: 78px 19px 83px; }
+  .tn-anchors-header { align-items: start; display: block; }
+  .tn-anchors-header > p { font-size: 13px; margin-top: 28px; }
+  .tn-anchor-grid { display: block; margin-top: 43px; }
+  .tn-anchor-card { min-height: 0; padding: 22px 21px 23px; }
+  .tn-anchor-card + .tn-anchor-card { margin-top: 18px; }
+  .tn-anchor-card h3 { font-size: 36px; }
+  .tn-archive-heading { align-items: start; display: block; }
+  .tn-archive-meta { margin-top: 26px; }
+  .tn-archive-strip { display: block; margin-top: 42px; }
+  .tn-archive-strip-label { border-bottom: 1px solid rgba(21, 36, 44, .26); border-right: 0; padding: 17px 0; }
+  .tn-archive-row { gap: 9px; grid-template-columns: 38px 53px minmax(0, 1fr) 54px 14px; padding: 16px 0; }
+  .tn-archive-place { font-size: 15px; }
+  .tn-archive-date, .tn-archive-read, .tn-archive-night { font-size: 8px; }
+  .tn-archive-note { align-items: start; flex-direction: column; gap: 14px; }
+  .tn-archive-note a { margin-left: 0; }
+  .tn-method-section { display: block; padding: 75px 19px 81px; }
+  .tn-method-marker { font-size: 61px; }
+  .tn-method-copy { margin-top: 36px; }
+  .tn-method-steps { margin-top: 50px; }
+  .tn-close { padding: 87px 19px 91px; }
+  .tn-close h2 { font-size: clamp(61px, 18vw, 83px); }
+  .tn-close p { font-size: 14px; max-width: 260px; }
+  .tn-footer { display: flex; align-items: flex-start; flex-direction: column; gap: 17px; padding: 25px 19px 31px; }
+  .tn-footer p { max-width: 300px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-notebook *,
+  .ticket-notebook *::before,
+  .ticket-notebook *::after { animation-duration: .01ms !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

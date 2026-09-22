@@ -1,0 +1,32 @@
+{
+  "project": {
+    "slug": "not safe!",
+    "name": "",
+    "artist": {
+      "slug": "artist",
+      "name": "Artist"
+    },
+    "runLabel": "Broken fixture"
+  },
+  "moments": [],
+  "records": [
+    {
+      "slug": "record",
+      "date": "yesterday",
+      "venue": "Unknown",
+      "moments": [
+        {
+          "momentSlug": "missing",
+          "result": "maybe",
+          "observations": [],
+          "sources": [
+            {
+              "url": "javascript:alert(1)",
+              "platform": "unknown"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

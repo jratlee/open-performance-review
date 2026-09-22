@@ -1,0 +1,4 @@
+- [Local-first demo prototype](demo-data-prototype.md) — preserve the upstream database-free, illustrative-data boundary and evidence-led language.
+- [Human field-record aesthetic](human-field-record-aesthetic.md) — prefer restrained, practical print artifacts over glossy editorial styling that reads as AI-generated.
+- [Fan-curious copy](fan-curious-copy.md) — make the voice sound like a fan asking about a specific show, while keeping evidence language plain.
+- [Open performance review engine](open-performance-review-engine.md) — possible pivot from one artist site to a downloadable GitHub tool for public performance data.

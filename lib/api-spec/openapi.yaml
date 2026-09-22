@@ -1,0 +1,438 @@
+openapi: 3.1.0
+info:
+  title: Open Performance Review API
+  version: 1.0.0
+  description: |
+    Read-only, local-first API for comparing repeatable moments in public
+    performance records. The API never diagnoses an artist or infers private
+    condition from stage observations.
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Service health
+  - name: projects
+    description: Example projects and performance records
+  - name: sources
+    description: Bounded, curated public-source discovery
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Check service and data health
+      responses:
+        "200":
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List available example projects
+      responses:
+        "200":
+          description: Projects available in this local-first release
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectSummary"
+  /projects/{projectSlug}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get project metadata, moments, and records
+      parameters:
+        - $ref: "#/components/parameters/ProjectSlug"
+      responses:
+        "200":
+          description: Project detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /projects/{projectSlug}/records/{recordSlug}:
+    get:
+      operationId: getProjectRecord
+      tags: [projects]
+      summary: Get one performance record and its evidence
+      parameters:
+        - $ref: "#/components/parameters/ProjectSlug"
+        - $ref: "#/components/parameters/RecordSlug"
+      responses:
+        "200":
+          description: Performance record detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PerformanceRecordDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /projects/{projectSlug}/moments/{momentSlug}/comparison:
+    get:
+      operationId: getProjectMomentComparison
+      tags: [projects]
+      summary: Compare one repeatable moment across records
+      parameters:
+        - $ref: "#/components/parameters/ProjectSlug"
+        - $ref: "#/components/parameters/MomentSlug"
+      responses:
+        "200":
+          description: Moment comparison
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MomentComparison"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /source-index:
+    get:
+      operationId: searchSourceIndex
+      tags: [sources]
+      summary: Search a bounded curated source index
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search text, limited to 80 characters.
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 80
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+      responses:
+        "200":
+          description: Curated source matches. No arbitrary URL is fetched.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SourceIndexResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  parameters:
+    ProjectSlug:
+      name: projectSlug
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^[a-z0-9-]{1,80}$"
+    RecordSlug:
+      name: recordSlug
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^[a-z0-9-]{1,80}$"
+    MomentSlug:
+      name: momentSlug
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^[a-z0-9-]{1,80}$"
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    BadRequest:
+      description: Invalid bounded input
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        dependencies:
+          type: object
+          additionalProperties:
+            type: string
+      required: [status, dependencies]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    Artist:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+      required: [slug, name]
+    ProjectSummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        artist:
+          $ref: "#/components/schemas/Artist"
+        description:
+          type: string
+        runLabel:
+          type: string
+        status:
+          type: string
+          enum: [illustrative, reviewed, mixed]
+        showCount:
+          type: integer
+        momentCount:
+          type: integer
+        sourceCount:
+          type: integer
+        coverageStatus:
+          $ref: "#/components/schemas/CoverageStatus"
+        lastReviewedAt:
+          type: string
+          format: date-time
+      required: [slug, name, artist, description, runLabel, status, showCount, momentCount, sourceCount, coverageStatus, lastReviewedAt]
+    ProjectDetail:
+      allOf:
+        - $ref: "#/components/schemas/ProjectSummary"
+        - type: object
+          properties:
+            moments:
+              type: array
+              items:
+                $ref: "#/components/schemas/RepeatableMoment"
+            records:
+              type: array
+              items:
+                $ref: "#/components/schemas/PerformanceRecordSummary"
+            sourcePolicy:
+              type: string
+          required: [moments, records, sourcePolicy]
+    CoverageStatus:
+      type: string
+      enum: [complete, partial, insufficient]
+    PublicationStatus:
+      type: string
+      enum: [published, withdrawn]
+    ReviewResult:
+      type: string
+      enum: [lower, in_line, higher, no_reliable_read]
+    Confidence:
+      anyOf:
+        - type: string
+          enum: [low, medium, high]
+        - type: "null"
+    PerformanceRecordSummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        date:
+          type: string
+          format: date
+        venue:
+          type: string
+        publicationStatus:
+          $ref: "#/components/schemas/PublicationStatus"
+        evidenceStatus:
+          $ref: "#/components/schemas/CoverageStatus"
+        result:
+          $ref: "#/components/schemas/ReviewResult"
+        confidence:
+          $ref: "#/components/schemas/Confidence"
+        summary:
+          anyOf:
+            - type: string
+            - type: "null"
+        coverageNote:
+          type: string
+        momentCount:
+          type: integer
+        usableSourceCount:
+          type: integer
+        lastReviewedAt:
+          type: string
+          format: date-time
+      required: [slug, date, venue, publicationStatus, evidenceStatus, result, confidence, summary, coverageNote, momentCount, usableSourceCount, lastReviewedAt]
+    RepeatableMoment:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        version:
+          type: integer
+        focus:
+          type: string
+          enum: [movement, vocal_interaction, crowd_interaction, staging, other]
+        description:
+          type: string
+        segmentLabel:
+          type: string
+      required: [slug, name, version, focus, description, segmentLabel]
+    Provenance:
+      type: object
+      properties:
+        relation:
+          type: string
+          enum: [original, repost, unknown]
+        note:
+          anyOf:
+            - type: string
+            - type: "null"
+      required: [relation, note]
+    EvidenceSource:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+        platform:
+          type: string
+        creator:
+          anyOf:
+            - type: string
+            - type: "null"
+        provenance:
+          $ref: "#/components/schemas/Provenance"
+        availability:
+          type: string
+          enum: [available, unavailable, not_checked]
+        quality:
+          type: string
+          enum: [good, usable, limited]
+        selective:
+          type: boolean
+      required: [id, url, platform, creator, provenance, availability, quality, selective]
+    Observation:
+      type: object
+      properties:
+        signalType:
+          type: string
+          enum: [movement, stage_coverage, pauses, crowd_interaction, vocal_variation, staging]
+        label:
+          type: string
+        note:
+          type: string
+      required: [signalType, label, note]
+    RecordMoment:
+      type: object
+      properties:
+        moment:
+          $ref: "#/components/schemas/RepeatableMoment"
+        result:
+          $ref: "#/components/schemas/ReviewResult"
+        observations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Observation"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenceSource"
+        evidenceNote:
+          type: string
+      required: [moment, result, observations, sources, evidenceNote]
+    PerformanceRecordDetail:
+      allOf:
+        - $ref: "#/components/schemas/PerformanceRecordSummary"
+        - type: object
+          properties:
+            moments:
+              type: array
+              items:
+                $ref: "#/components/schemas/RecordMoment"
+            baselineNote:
+              type: string
+          required: [moments, baselineNote]
+    ComparisonRecord:
+      type: object
+      properties:
+        record:
+          $ref: "#/components/schemas/PerformanceRecordSummary"
+        result:
+          $ref: "#/components/schemas/ReviewResult"
+        observations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Observation"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenceSource"
+      required: [record, result, observations, sources]
+    MomentComparison:
+      type: object
+      properties:
+        moment:
+          $ref: "#/components/schemas/RepeatableMoment"
+        baselineRule:
+          type: string
+        baselineCoverage:
+          type: integer
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComparisonRecord"
+      required: [moment, baselineRule, baselineCoverage, records]
+    SourceIndexItem:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+        platform:
+          type: string
+        creator:
+          anyOf:
+            - type: string
+            - type: "null"
+        title:
+          type: string
+        projectSlug:
+          type: string
+        recordSlug:
+          type: string
+        provenanceStatus:
+          type: string
+      required: [id, url, platform, creator, title, projectSlug, recordSlug, provenanceStatus]
+    SourceIndexResult:
+      type: object
+      properties:
+        query:
+          type: string
+        bounded:
+          type: boolean
+        notice:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceIndexItem"
+      required: [query, bounded, notice, results]
